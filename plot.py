@@ -26,14 +26,15 @@ def plot_fan_curve(data, filename):
     plt.tight_layout()
 
     # Save image as PNG
-    image_filename = filename.replace(".json", ".png")
+    plots_folder = os.path.join(os.path.dirname(__file__), "plots")
+    image_filename = os.path.join(plots_folder, filename.replace(".json", ".png"))
     plt.savefig(image_filename)
     print(f"Image saved: {image_filename}")
     plt.close()
 
 
 def main():
-    folder = os.path.dirname(__file__)
+    folder = os.path.join(os.path.dirname(__file__), "settings")
     files = [f for f in os.listdir(folder) if f.endswith(".json")]
 
     if not files:
@@ -42,7 +43,8 @@ def main():
 
     for file in files:
         try:
-            with open(file, "r") as json_file:
+            file_path = os.path.join(folder, file)
+            with open(file_path, "r") as json_file:
                 data = json.load(json_file)
                 plot_fan_curve(data, file)
         except Exception as e:
